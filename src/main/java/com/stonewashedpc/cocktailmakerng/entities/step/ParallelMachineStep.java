@@ -20,10 +20,6 @@ public class ParallelMachineStep extends Step {
 	public ParallelMachineStep() {
 		super();
 	}
-
-	public void handle() {
-		// TODO
-	}
 	
 	public List<Serving> getServings() {
 		return servings;

@@ -20,10 +20,6 @@ public class SequentialMachineStep extends Step {
 	public SequentialMachineStep() {
 		super();
 	}
-
-	public void handle() {
-		// TODO
-	}
 	
 	public List<Serving> getServings() {
 		return servings;

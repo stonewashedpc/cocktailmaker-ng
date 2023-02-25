@@ -23,8 +23,6 @@ public abstract class Step {
 	@Id
 	@GeneratedValue
 	protected Long id;
-
-	public abstract void handle();
 	
 	public Step() {
 		super();

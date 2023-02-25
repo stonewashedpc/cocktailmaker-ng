@@ -15,10 +15,6 @@ public class ManualStep extends Step {
 		super();
 	}
 
-	public void handle() {
-		// TODO
-	}
-
 	public String getDescription() {
 		return description;
 	}
