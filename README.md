@@ -4,7 +4,7 @@ This project was created following the steps at `https://github.com/dsyer/spring
 
 ## Run with Maven
 
-Run `mvnw spring-boot:build` to run this project.
+Run `mvnw spring-boot:run` to run this project.
 
 To build the angular project continuously and push to `target/classes` run `ng build --watch`.
 
