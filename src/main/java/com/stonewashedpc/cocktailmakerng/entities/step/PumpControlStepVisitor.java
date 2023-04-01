@@ -31,7 +31,7 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 			
 			new Thread(() -> {
 				for (PumpInstruction pumpInstruction : pumpInstructions) {
-					pumpInstruction.getPump().start();
+					pumpInstruction.getPump().start(this.pumpService.getGpioService());
 					try {
 						Thread.sleep(pumpInstruction.getDuration());
 					} catch (InterruptedException e) {
@@ -39,7 +39,7 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 					} finally {
 						// Make sure to turn off the pumps, even
 						// if the thread was interrupted
-						pumpInstruction.getPump().stop();
+						pumpInstruction.getPump().stop(this.pumpService.getGpioService());
 					}
 				}
 				// Release mutex
@@ -70,7 +70,7 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 
 			new Thread(() -> {
 				for (PumpInstruction pumpInstruction : pumpInstructions) {
-					pumpInstruction.getPump().start();
+					pumpInstruction.getPump().start(this.pumpService.getGpioService());
 				}
 				
 				try {
@@ -80,7 +80,7 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 						long sleepDuration = instructionDuration - millisSinceStart;
 						if (sleepDuration > 0)
 							Thread.sleep(instructionDuration - millisSinceStart);
-						pumpInstruction.getPump().stop();
+						pumpInstruction.getPump().stop(this.pumpService.getGpioService());
 						millisSinceStart = instructionDuration;
 					}
 				} catch (InterruptedException e) {
@@ -88,7 +88,7 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 					// Make sure to turn off the pumps,
 					// if the thread was interrupted
 					for (PumpInstruction pumpInstruction : pumpInstructions) {
-						pumpInstruction.getPump().stop();
+						pumpInstruction.getPump().stop(this.pumpService.getGpioService());
 					}
 				} finally {
 					// Always release mutex in the end

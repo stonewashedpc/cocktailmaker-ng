@@ -1,7 +1,7 @@
 package com.stonewashedpc.cocktailmakerng.entities;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.stonewashedpc.cocktailmakerng.exceptions.HardwareException;
+import com.stonewashedpc.cocktailmakerng.model.GpioService;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,35 +15,24 @@ public abstract class HardwareComponent {
 	
 	@Id
 	private Integer bcm;
-	
-	// private Context context; // Pi4J Context
 
 	public HardwareComponent(Integer bcm) {
 		super();
-		this.bcm = bcm;
+		this.setBcm(bcm);
 	}
 	
 	public HardwareComponent() {
 		super();
 	}
 
-	protected void setHigh() {
+	protected void setHigh(GpioService service) {
+		service.getDigitalOutput(this.bcm).high();
 		System.out.println("BCM-Pin " + bcm + " set to high.");
 	}
 	
-	protected void setLow() {
+	protected void setLow(GpioService service) {
+		service.getDigitalOutput(this.bcm).low();
 		System.out.println("BCM-Pin " + bcm + " set to low.");
-	}
-	
-	public void pulse(long millis) throws HardwareException {
-		try {
-			this.setHigh();
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			throw new HardwareException("HardwareComponent interrupted before finishing pulse for " + millis + " ms.");
-		} finally {
-			this.setLow();
-		}
 	}
 
 	public Integer getBcm() {

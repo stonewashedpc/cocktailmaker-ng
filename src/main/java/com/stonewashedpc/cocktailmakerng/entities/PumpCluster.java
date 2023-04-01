@@ -2,6 +2,8 @@ package com.stonewashedpc.cocktailmakerng.entities;
 
 import java.util.Set;
 
+import com.stonewashedpc.cocktailmakerng.model.GpioService;
+
 public class PumpCluster implements Pumpable {
 
 	private Set<Pump> pumps;
@@ -17,12 +19,12 @@ public class PumpCluster implements Pumpable {
 	}
 
 	@Override
-	public void start() {
-		for (Pump pump : this.pumps) pump.setHigh();
+	public void start(GpioService service) {
+		for (Pump pump : this.pumps) pump.setLow(service);
 	}
 
 	@Override
-	public void stop() {
-		for (Pump pump : this.pumps) pump.setLow();
+	public void stop(GpioService service) {
+		for (Pump pump : this.pumps) pump.setHigh(service);
 	}
 }

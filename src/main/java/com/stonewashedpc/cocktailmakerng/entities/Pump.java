@@ -1,5 +1,7 @@
 package com.stonewashedpc.cocktailmakerng.entities;
 
+import com.stonewashedpc.cocktailmakerng.model.GpioService;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -40,12 +42,12 @@ public class Pump extends HardwareComponent implements Pumpable {
 	}
 
 	@Override
-	public void start() {
-		this.setHigh();
+	public void start(GpioService service) {
+		this.setLow(service);
 	}
 
 	@Override
-	public void stop() {
-		this.setLow();
+	public void stop(GpioService service) {
+		this.setHigh(service);
 	}
 }

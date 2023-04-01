@@ -24,12 +24,15 @@ public class PumpServiceImpl implements PumpService {
 	
 	private StepService stepService;
 	
+	private GpioService gpioService;
+	
 	private Semaphore mutex = new Semaphore(1);
 	
-	public PumpServiceImpl(PumpRepository pumpRepository, StepService stepService) {
+	public PumpServiceImpl(PumpRepository pumpRepository, StepService stepService, GpioService gpioService) {
 		super();
 		this.pumpRepository = pumpRepository;
 		this.stepService = stepService;
+		this.gpioService = gpioService;
 	}
 
 	@Override
@@ -92,5 +95,10 @@ public class PumpServiceImpl implements PumpService {
 	@Override
 	public void releaseMutex() {
 		this.mutex.release();
+	}
+	
+	@Override
+	public GpioService getGpioService() {
+		return gpioService;
 	}
 }
