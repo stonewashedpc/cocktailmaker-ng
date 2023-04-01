@@ -124,12 +124,12 @@ public class PumpControlStepVisitor extends StepVisitor<Long, PumpControlExcepti
 
 		return servings.stream().map(serving -> {
 
-			// The following should never fail due to the
-			// previous isPossible-check
 			Set<Pump> availPumps = null;
 			try {
 				availPumps = this.pumpService.findByIngredient(serving.getIngredient());
 			} catch (ElementNotFoundException e) {
+				// Should not occur due to the
+				// previous isPossible-check
 				e.printStackTrace();
 			}
 
