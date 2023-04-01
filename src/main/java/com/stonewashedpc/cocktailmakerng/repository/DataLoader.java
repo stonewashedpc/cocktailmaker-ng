@@ -60,12 +60,13 @@ public class DataLoader {
 			e.printStackTrace();
 		}
 		
-		pumpRepository.save(new Pump(0, 495, i1));
-		pumpRepository.save(new Pump(1, 495, i2));
-		pumpRepository.save(new Pump(2, 495, i3));
-		pumpRepository.save(new Pump(3, 495, i5));
-		pumpRepository.save(new Pump(4, 495, i7));
-		pumpRepository.save(new Pump(5, 495, i4));
-		pumpRepository.save(new Pump(6, 495, i1));
+		pumpRepository.save(new Pump(18, 400, i1));
+		pumpRepository.save(new Pump(27, 400, i2));
+		pumpRepository.save(new Pump(22, 400, i3));
+		pumpRepository.save(new Pump(23, 400, i5));
+		pumpRepository.save(new Pump(24, 400, i7));
+		pumpRepository.save(new Pump(25, 400, i4));
+		pumpRepository.save(new Pump(4, 400, i4));
+		pumpRepository.save(new Pump(17, 400, i1));
 	}
 }
