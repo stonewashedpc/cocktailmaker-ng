@@ -68,21 +68,11 @@ public class CocktailServiceImpl implements CocktailService<Cocktail, Long> {
 	
 	// TODO Optimize Performance (use native sql in repository?)
 	@Override
-	public Page<Cocktail> findPossiblePageable(Pageable page) {
+	public List<Cocktail> findPossible() {
 		if (this.possibleCocktailsCache.isEmpty()) {
 			System.out.println("Recomputing cache...");
 			IngredientCollectionStepVisitor visitor = new IngredientCollectionStepVisitor();
 			Set<Ingredient> availableIngredients = this.pumpService.findAvailableIngredients();
-			
-//			this.possibleCocktailsCache = Optional.of(new ArrayList<Cocktail>());
-//			for (Cocktail c : cocktailRepository.findAll()) {
-//				Set<Ingredient> ingredients = new HashSet<Ingredient>();
-//				for (Step s : c.getSteps()) {
-//					s.accept(visitor);
-//					ingredients.addAll(visitor.getResult());
-//				}
-//				if(availableIngredients.containsAll(ingredients)) this.possibleCocktailsCache.get().add(c);
-//			}
 			
 			this.possibleCocktailsCache = Optional.of(cocktailRepository.findAll().stream().filter(c -> {
 				return c.getSteps().stream().map(s -> {
@@ -93,12 +83,20 @@ public class CocktailServiceImpl implements CocktailService<Cocktail, Long> {
 			}).collect(Collectors.toList()));
 			
 		}
-		
-		int totalSize = possibleCocktailsCache.get().size();
+		return this.possibleCocktailsCache.get();
+	}
+	
+	private <T> Page<T> asPage(List<T> list, Pageable page) {
+		int totalSize = list.size();
 		int start = (int) Math.min(page.getOffset(), totalSize);
 		int end = Math.min(start + page.getPageSize(), totalSize);
-		return new PageImpl<Cocktail>(possibleCocktailsCache.get().subList(start, end), page, totalSize);
-		
+		return new PageImpl<T>(list.subList(start, end), page, totalSize);
+	}
+	
+	
+	@Override
+	public Page<Cocktail> findPossiblePageable(Pageable page) {
+		return this.asPage(this.findPossible(), page);
 	}
 
 	@Override
@@ -106,9 +104,20 @@ public class CocktailServiceImpl implements CocktailService<Cocktail, Long> {
 		this.possibleCocktailsCache = Optional.empty();
 	}
 
-//	@Override
-//	public void mix(Cocktail cocktail) {
-//		cocktail.getSteps().forEach(step -> step.accept(new PumpControlStepVisitor(this.pumpService)));
-//	}
+	@Override
+	public Page<Cocktail> findPossiblePageableByName(String name, Pageable page) {
+		return this.asPage(this.findPossible().stream()
+					.filter(p -> p.getName().toLowerCase().contains(name.toLowerCase()))
+					.collect(Collectors.toList())
+				, page);
+	}
+
+	@Override
+	public Page<Cocktail> findPageableByName(String name, Pageable page) {
+		return this.asPage(this.findAll().stream()
+					.filter(p -> p.getName().toLowerCase().contains(name.toLowerCase()))
+					.collect(Collectors.toList())
+				, page);
+	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stonewashedpc.cocktailmakerng.entities.Cocktail;
@@ -29,13 +30,13 @@ public class CocktailController {
 	}
 
 	@GetMapping
-	public Page<Cocktail> getCocktails(Pageable page) {
-		return cocktailService.findPageable(page);
+	public Page<Cocktail> getCocktailsByName(@RequestParam(required=false) String name, Pageable page) {
+		return cocktailService.findPageableByName(name == null ? "" : name, page);
 	}
 	
 	@GetMapping("/possible")
-	public Page<Cocktail> getPossibleCocktails(Pageable page) {
-		return cocktailService.findPossiblePageable(page);
+	public Page<Cocktail> getPossibleCocktailsByName(@RequestParam(required=false) String name, Pageable page) {
+		return cocktailService.findPossiblePageableByName(name == null ? "" : name, page);
 	}
 	
 	@GetMapping("/{id}")
